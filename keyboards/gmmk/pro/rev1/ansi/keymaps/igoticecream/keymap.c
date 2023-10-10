@@ -84,6 +84,10 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
 // clang-format on
 
 bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
+    if (rgb_matrix_get_mode() != RGB_MATRIX_STATUS) {
+        return false;
+    }
+
     switch (get_highest_layer(layer_state)) {
         case BASE:
             rgb_matrix_set_color_all(STATUS_LAYER_BASE_COLOR);
@@ -96,12 +100,10 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
             break;
     }
 
-    if (rgb_matrix_get_mode() == RGB_MATRIX_STATUS) {
-        if (host_keyboard_led_state().caps_lock) {
-            for (uint8_t i = 0; i < RGB_MATRIX_LED_COUNT; ++i) {
-                if (HAS_ANY_FLAGS(g_led_config.flags[i], LED_FLAG_UNDERGLOW)) {
-                    rgb_matrix_set_color(i, STATUS_CAPS_COLOR);
-                }
+    if (host_keyboard_led_state().caps_lock) {
+        for (uint8_t i = 0; i < RGB_MATRIX_LED_COUNT; ++i) {
+            if (HAS_ANY_FLAGS(g_led_config.flags[i], LED_FLAG_UNDERGLOW)) {
+                rgb_matrix_set_color(i, STATUS_CAPS_COLOR);
             }
         }
     }
