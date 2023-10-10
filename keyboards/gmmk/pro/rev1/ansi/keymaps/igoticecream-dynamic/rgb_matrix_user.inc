@@ -18,6 +18,8 @@ bool STATUS(effect_params_t* params) {
         RGB_MATRIX_TEST_LED_FLAGS();
         if (HAS_ANY_FLAGS(g_led_config.flags[i], LED_FLAG_UNDERGLOW)) {
             rgb_matrix_set_color(i, rgb.r, rgb.g, rgb.b);
+        } else {
+            rgb_matrix_set_color(i, RGB_OFF);
         }
     }
     return rgb_matrix_check_finished_leds(led_max);
