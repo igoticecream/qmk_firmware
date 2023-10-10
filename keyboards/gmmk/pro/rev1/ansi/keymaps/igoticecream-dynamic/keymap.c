@@ -117,13 +117,16 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 
 layer_state_t layer_state_set_user(layer_state_t state) {
     switch (get_highest_layer(state)) {
+        case BASE:
+            break;
         case GAME:
             if (host_keyboard_led_state().caps_lock) {
                 tap_code(KC_CAPS_LOCK);
             }
             break;
-        default:
+        case TEMP:
             break;
     }
+
     return state;
 }
