@@ -63,11 +63,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
     [TEMP] = LAYOUT(
-        QK_BOOT, KC_MYCM, KC_WHOM, KC_CALC, KC_MSEL, KC_MPRV, KC_MNXT, KC_MPLY, KC_MSTP, KC_MUTE, KC_VOLD, KC_VOLU, KC_SCRL, KC_PAUS,          KC_MUTE,
-        _______, KC_P1,   KC_P2,   KC_P3,   KC_P4,   KC_P5,   KC_P6,   KC_P7,   KC_P8,   KC_P9,   KC_P0,   KC_PMNS, KC_PPLS, _______,          KC_INS,
-        _______, _______, RGB_VAI, RGB_HUI, _______, _______, _______, _______, _______, _______, _______, KC_PSLS, KC_PAST, _______,          _______,
-        TG(1),   _______, RGB_VAD, RGB_HUD, _______, _______, _______, _______, _______, _______, _______, _______,          KC_PENT,          _______,
-        _______,          _______, _______, _______, _______, _______, NK_TOGG, _______, _______, KC_PDOT, _______,          _______, RGB_MOD, KC_HOME,
+        QK_BOOT, KC_MYCM, KC_WHOM, KC_CALC, KC_MSEL, KC_MPRV, KC_MNXT, KC_MPLY, KC_MSTP, KC_MUTE, KC_VOLD, KC_VOLU, KC_SCRL, KC_PAUS,           KC_MUTE,
+        _______, KC_P1,   KC_P2,   KC_P3,   KC_P4,   KC_P5,   KC_P6,   KC_P7,   KC_P8,   KC_P9,   KC_P0,   KC_PMNS, KC_PPLS, _______,           KC_INS,
+        _______, RGB_HUI, RGB_SAI, RGB_VAI, _______, _______, _______, _______, _______, _______, _______, KC_PSLS, KC_PAST, _______,           _______,
+        TG(1),   RGB_HUD, RGB_SAD, RGB_VAI, _______, _______, _______, _______, _______, _______, _______, _______,          KC_PENT,           _______,
+        _______,          _______, _______, _______, _______, _______, NK_TOGG, _______, _______, KC_PDOT, _______,          _______, RGB_MOD,  KC_HOME,
         _______, _______, _______,                            RGB_TOG,                            _______, _______, _______, RGB_SPD, RGB_RMOD, RGB_SPI
     ),
 
@@ -84,7 +84,7 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
 // clang-format on
 
 bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
-    if (rgb_matrix_get_mode() != RGB_MATRIX_STATUS) {
+    if (rgb_matrix_get_mode() != RGB_MATRIX_CUSTOM_STATUS) {
         return false;
     }
 
@@ -109,4 +109,22 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     }
 
     return false;
+}
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+#ifdef CONSOLE_ENABLE
+    switch (keycode) {
+        case KC_ESC:
+            if (record->event.pressed) {
+                uprintf("rgb mode:%d speed:%d\n", rgb_matrix_get_mode(), rgb_matrix_get_speed());
+            }
+            // Skip all further processing of this key
+            return false;
+        default:
+            // Process all other keycodes normally
+            return true;
+    }
+#endif
+
+    return true;
 }
