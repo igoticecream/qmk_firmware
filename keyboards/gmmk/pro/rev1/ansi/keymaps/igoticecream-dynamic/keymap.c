@@ -78,7 +78,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
     [BASE] = { ENCODER_CCW_CW(KC_VOLD, KC_VOLU) },
     [GAME] = { ENCODER_CCW_CW(_______, _______) },
-    [TEMP] = { ENCODER_CCW_CW(_______, _______) }
+    [TEMP] = { ENCODER_CCW_CW(KC_MPRV, KC_MNXT) }
 };
 #endif
 // clang-format on
